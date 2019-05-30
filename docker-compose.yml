@@ -52,6 +52,19 @@ services:
       - ./nextcloud-data:/var/www/html:ro
     depends_on:
       - app
+      
+  collabora-online:
+    image: collabora/code
+    environment:
+      - TZ=Europe/Berlin
+      - domain=cloud\\.{changeme}\\.de #your Nextcloud Domain - escape dots with double backslashes, e.g. cloud\\.example\\.com
+      - username={changeme} #Admin username for the collabora online webinterface
+      - password={changeme} #Admin password for the collabora online webinterface
+    ports:
+      - 127.0.0.1:9980:9980
+    restart: unless-stopped
+    cap_add:
+      - MKNOD
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
