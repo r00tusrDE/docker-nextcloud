@@ -33,5 +33,9 @@ If you don't need phpmyadmin or collabora-online just delete the particular sect
 
 I'm using Nextcloud behind a reverse proxy so all ports are only published to localhost. Change this if needed in docker-compose.yml
 
+Apache reverse proxy config for Nextcloud: https://github.com/r00tusrDE/nextcloud-reverse-proxy-apache
+
+Apache reverse proxy config for Collabora-Online: https://github.com/r00tusrDE/collabora-online-reverse-proxy-apache
+
 For more information about Nextcloud environment variables and Nextcloud with docker visit the official nextcloud docker repository:
 https://github.com/nextcloud/docker
