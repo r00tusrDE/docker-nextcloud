@@ -57,7 +57,7 @@ services:
     image: collabora/code
     environment:
       - TZ=Europe/Berlin
-      - domain=cloud\\.{changeme}\\.de #your Nextcloud Domain - escape dots with double backslashes, e.g. cloud\\.example\\.com
+      - domain={changeme} #your Nextcloud Domain - escape dots with double backslashes, e.g. cloud\\.example\\.com
       - username={changeme} #Admin username for the collabora online webinterface
       - password={changeme} #Admin password for the collabora online webinterface
     ports:
