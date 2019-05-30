@@ -1,0 +1,64 @@
+version: '3'
+
+services:
+  db:
+    image: mariadb
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: unless-stopped
+    volumes:
+      - ./db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD={changeme}
+    env_file:
+      - db.env
+
+  app:
+    image: nextcloud:fpm-alpine
+    environment:
+      - MYSQL_HOST=db
+      - REDIS_HOST=redis
+    env_file:
+      - db.env
+      - app.env
+    volumes:
+      - ./nextcloud-data:/var/www/html
+    restart: unless-stopped
+    depends_on:
+       - db
+       - redis
+
+  cron:
+    image: nextcloud:fpm-alpine
+    restart: unless-stopped
+    volumes:
+      - ./nextcloud-data:/var/www/html
+    entrypoint: /cron.sh
+    depends_on:
+      - db
+      - redis
+
+  redis:
+    image: redis:alpine
+    restart: unless-stopped
+    volumes:
+      - ./nextcloud-redis:/data
+
+  web:
+    build: ./web
+    restart: always
+    ports:
+      - 127.0.0.1:8085:80
+    volumes:
+      - ./nextcloud-data:/var/www/html:ro
+    depends_on:
+      - app
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_HOST=db
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:8084:80
+    volumes:
+      - ./pma/sessions:/sessions
